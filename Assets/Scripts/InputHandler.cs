@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Commands.MoveAround;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,15 +8,32 @@ namespace Assets.Scripts
 {
     public class InputHandler : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        [SerializeField] private string horizontalInputName;
+        [SerializeField] private string verticalInputName;
+        [SerializeField] private float movementSpeed;
 
+        private CharacterController charController;
+
+        private MoveAround.CommandHandler moveAround;
+
+        private void Awake()
+        {
+            charController = GetComponent<CharacterController>();
+
+            moveAround = new MoveAround.CommandHandler();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
+            moveAround.Handle(new MoveAround.Command
+            {
+                characterController = charController,
+                horizontalInputName = horizontalInputName,
+                verticalInputName = verticalInputName,
+                movementSpeed = movementSpeed,
+                transform = transform
+            });
+
 
         }
     }

@@ -14,10 +14,8 @@ namespace Assets.Scripts.Commands
             public string mouseXInputName { get; set; }
             public string mouseYInputName { get; set; }
             public float mouseSensitivity { get; set; }
-            public Transform transform { get; set; }
             public Transform playerBody { get; set; }
-
-
+            public Transform transform { get; set; }
         }
     }
 }

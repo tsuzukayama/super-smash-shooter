@@ -16,11 +16,13 @@ namespace Assets.Scripts
         [SerializeField] private Transform playerBody;
 
         private bool showMenu = false;
+        private LookAround.CommandHandler lookAround;
         private float xAxisClamp;
 
         private void Awake()
         {            
             xAxisClamp = 0.0f;
+            lookAround = new LookAround.CommandHandler();            
         }
 
 
@@ -36,10 +38,9 @@ namespace Assets.Scripts
             LockCursor();
             if (Input.GetKeyDown(KeyCode.M))
             {
-                showMenu = true;
-            }
-            var a = new LookAround.CommandHandler();
-            a.Execute(new LookAround.Command
+                showMenu = !showMenu;
+            }            
+            lookAround.Handle(new LookAround.Command
             {
                 mouseSensitivity = mouseSensitivity,
                 mouseXInputName = mouseXInputName,
