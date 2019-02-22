@@ -424,7 +424,13 @@ MonoBehaviour:
   mouseXInputName: Mouse X
   mouseYInputName: Mouse Y
   mouseSensitivity: 150
-  playerBody: {fileID: 0}
+  playerBody: {fileID: 1531431864}
+--- !u!4 &1531431864 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6051582463934496120, guid: 8c0c814cf65380d4b8f7952a5ad77610,
+    type: 3}
+  m_PrefabInstance: {fileID: 6051582464819443392}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6051582464819443392
 PrefabInstance:
   m_ObjectHideFlags: 0
