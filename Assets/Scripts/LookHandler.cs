@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Commands;
+using Assets.Scripts.Commands.Jump;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +13,20 @@ namespace Assets.Scripts
     {
         [SerializeField] private string mouseXInputName, mouseYInputName;
         [SerializeField] private float mouseSensitivity;        
-
         [SerializeField] private Transform playerBody;
 
         private bool showMenu = false;
+        private float xAxisClamp = 0.0f;
+
         private LookAround.CommandHandler lookAround;
-        private float xAxisClamp;
+
 
         private void Awake()
         {            
-            xAxisClamp = 0.0f;
-            lookAround = new LookAround.CommandHandler();            
+            lookAround = new LookAround.CommandHandler();
+
         }
-
-
+        
         private void LockCursor()
         {
             if (!showMenu)
@@ -36,10 +37,11 @@ namespace Assets.Scripts
         private void Update()
         {
             LockCursor();
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                showMenu = !showMenu;
-            }            
+            HandleInput();
+        }
+
+        private void HandleInput()
+        {
             lookAround.Handle(new LookAround.Command
             {
                 mouseSensitivity = mouseSensitivity,
@@ -48,7 +50,13 @@ namespace Assets.Scripts
                 playerBody = playerBody,
                 transform = transform
             });
-        }
 
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                showMenu = !showMenu;
+            }
+
+
+        }
     }
 }
