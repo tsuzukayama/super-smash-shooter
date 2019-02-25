@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2153225338600302006}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,9 +112,9 @@ GameObject:
   - component: {fileID: 2153225339600208978}
   - component: {fileID: 2153225339600208977}
   - component: {fileID: 3093791284658602199}
+  - component: {fileID: 142267605996802543}
   - component: {fileID: 3950052567424802822}
-  - component: {fileID: 2707525413535454751}
-  - component: {fileID: 7740608417304497828}
+  - component: {fileID: 2591740063089698359}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -214,6 +214,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &142267605996802543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153225339600208976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17aa9fea9bc7a3241ad481a99fd3b255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncInterval: 0.1
+  camera: {fileID: 2153225338600302004}
 --- !u!114 &3950052567424802822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,7 +243,33 @@ MonoBehaviour:
   horizontalInputName: Horizontal
   verticalInputName: Vertical
   movementSpeed: 10
---- !u!114 &2707525413535454751
+  jumpFallOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0039520264
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9986572
+      value: 0.002357483
+      inSlope: 0.3468423
+      outSlope: 0.3468423
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.24354407
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpMultiplier: 10
+  jumpKey: 32
+--- !u!114 &2591740063089698359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -238,39 +278,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2153225339600208976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 0
-    i1: 0
-    i2: 0
-    i3: 0
-    i4: 0
-    i5: 0
-    i6: 0
-    i7: 0
-    i8: 0
-    i9: 0
-    i10: 0
-    i11: 0
-    i12: 0
-    i13: 0
-    i14: 0
-    i15: 0
+  m_SceneId: 0
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &7740608417304497828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2153225339600208976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a879b64bead2c8f4cb09bbb1329629eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_LocalPlayerAuthority: 1
+  m_AssetId: 164e7b0e4051bd146b3f00093a7d1574
