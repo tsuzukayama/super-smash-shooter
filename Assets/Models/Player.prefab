@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1804664357306145845}
   - component: {fileID: 6793929740807560090}
   - component: {fileID: 4586730008142978641}
+  - component: {fileID: 7940240251669488507}
   - component: {fileID: 1600462902387667664}
   m_Layer: 0
   m_Name: PlayerBody
@@ -31,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630944708681804299}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1179620199057582074}
@@ -105,7 +106,7 @@ CharacterController:
   m_GameObject: {fileID: 630944708681804299}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.5
@@ -168,6 +169,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
+--- !u!114 &7940240251669488507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630944708681804299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b66aaa25237de34aa42f36f42b643fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpFallOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0013160706
+      value: 0.9952698
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9960327
+      value: 0
+      inSlope: 0.42955998
+      outSlope: 0.42955998
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.105991185
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpMultiplier: 10
+  jumpKey: 32
 --- !u!54 &1600462902387667664
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -182,7 +221,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1 &1719142152726786497
 GameObject:
@@ -242,7 +281,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -329,4 +368,4 @@ MonoBehaviour:
   m_SceneId: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
-  m_AssetId: 
+  m_AssetId: 164e7b0e4051bd146b3f00093a7d1574
