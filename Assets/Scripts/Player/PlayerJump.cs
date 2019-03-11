@@ -18,6 +18,8 @@ public class PlayerJump : MonoBehaviour
 
     private bool isLocalPlayer;
 
+    private bool isGrounded;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +32,7 @@ public class PlayerJump : MonoBehaviour
     }
 
     bool IsGrounded() {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.2f);
+        return Physics.CheckCapsule(collider.bounds.center, new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.1f, collider.bounds.center.z), 0.18f);
     }
 
 // Update is called once per frame
@@ -42,15 +44,28 @@ public class PlayerJump : MonoBehaviour
             return;
         }
 
-        if (IsGrounded())
-        {
-            isJumping = false;
-        }
-        if (Input.GetKeyDown(jumpKey) && IsGrounded())
+        if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
             Debug.Log("jumpando");            
             playerRigidbody.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
         }
 
+    }
+
+    void OnCollisionEnter(Collision theCollision)
+    {
+        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    //consider when character is jumping .. it will exit collision.
+    void OnCollisionExit(Collision theCollision)
+    {
+        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        {
+            isGrounded = false;
+        }
     }
 }

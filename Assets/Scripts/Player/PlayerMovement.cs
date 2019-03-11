@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isLocalPlayer;
 
+    private bool isGrounded;
+
     void Start()
     {
         isLocalPlayer = gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
@@ -57,15 +59,27 @@ public class PlayerMovement : MonoBehaviour
         Animating(h, v);
     }
 
-    bool IsGrounded()
+    void OnCollisionEnter(Collision theCollision)
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    //consider when character is jumping .. it will exit collision.
+    void OnCollisionExit(Collision theCollision)
+    {
+        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        {
+            isGrounded = false;
+        }
     }
 
     void Move(float h, float v)
     {
         // Set the movement vector based on the axis input.
-        if (!IsGrounded())
+        if (!isGrounded)
         {
             movement.Set(hJumping, 0f, vJumping);
         }
