@@ -25,7 +25,7 @@ public class PlayerJump : MonoBehaviour
     }
 
     bool IsGrounded() {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.2f);
     }
 
 // Update is called once per frame
@@ -35,10 +35,9 @@ public class PlayerJump : MonoBehaviour
         {
             isJumping = false;
         }
-        if (Input.GetKeyDown(jumpKey) && !isJumping)
+        if (Input.GetKeyDown(jumpKey) && IsGrounded())
         {
-            Debug.Log("jumpando");
-            isJumping = true;
+            Debug.Log("jumpando");            
             playerRigidbody.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
         }
 
