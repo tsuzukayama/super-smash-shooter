@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,8 +17,11 @@ public class PlayerMovement : MonoBehaviour
 
     private float hJumping = 0, vJumping = 0;
 
+    private bool isLocalPlayer;
+
     void Start()
     {
+        isLocalPlayer = gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
         distToGround = collider.bounds.extents.y;
     }
     void Awake()
@@ -34,6 +38,11 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            // exit from update if this is not the local player
+            return;
+        }
         // Store the input axes.
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");

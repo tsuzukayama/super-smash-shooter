@@ -1,21 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Mirror;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;            // The position that that camera will be following.
+    // public Transform target;            // The position that that camera will be following.
     public float smoothing = 5f;        // The speed with which the camera will be following.
 
     Vector3 offset;                     // The initial offset from the target.
 
+    private bool isLocalPlayer;
+
+    private Transform target;
+
     void Start()
     {
+        target = gameObject.transform.parent.gameObject.transform.Find("Body").gameObject.transform;
         // Calculate the initial offset.
         offset = transform.position - target.position;
+
+        isLocalPlayer = gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
     }
 
     void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            // exit from update if this is not the local player
+            gameObject.transform.parent.gameObject.transform.Find("Camera").gameObject.SetActive(false);
+            return;
+        }
+
         // Create a postion the camera is aiming for based on the offset from the target.
         Vector3 targetCamPos = target.position + offset;
 

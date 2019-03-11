@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,9 +16,13 @@ public class PlayerJump : MonoBehaviour
 
     private float distToGround;
 
+    private bool isLocalPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
+        isLocalPlayer = gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
+
         playerRigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
 
@@ -31,6 +36,12 @@ public class PlayerJump : MonoBehaviour
 // Update is called once per frame
     void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            // exit from update if this is not the local player
+            return;
+        }
+
         if (IsGrounded())
         {
             isJumping = false;
