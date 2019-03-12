@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    [Command]
     void Move(float h, float v)
     {
         // Set the movement vector based on the axis input.
@@ -96,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
         playerRigidbody.MovePosition(transform.position + movement);
     }
 
+    [Command]
     void Turning()
     {
         // Create a ray from the mouse cursor on screen in the direction of the camera.
@@ -129,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    [Command]
     void Animating(float h, float v)
     {
         // Create a boolean that is true if either of the input axes is non-zero.

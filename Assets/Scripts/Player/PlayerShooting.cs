@@ -117,7 +117,7 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    [ClientRpc]
+    [Command]
     void pushEnemy(Rigidbody enemy)
     {
         enemy.AddForce(Vector3.up * 10, ForceMode.Impulse);
