@@ -1,12 +1,14 @@
 ﻿using Mirror;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public float speed = 6f;            // The speed that the player will move at.
 
+
     Vector3 movement;                   // The vector to store the direction of the player's movement.
     Animator anim;                      // Reference to the animator component.
+
     Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
     int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
     float camRayLength = 100f;          // The length of the ray from the camera into the scene.
@@ -17,14 +19,10 @@ public class PlayerMovement : MonoBehaviour
 
     private float hJumping = 0, vJumping = 0;
 
-    private bool isLocalPlayer;
-
     private bool isGrounded;
 
     void Start()
-    {
-        isLocalPlayer = gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
-        distToGround = collider.bounds.extents.y;
+    {        distToGround = collider.bounds.extents.y;
     }
     void Awake()
     {
@@ -40,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || !isClient)
         {
             // exit from update if this is not the local player
             return;
@@ -76,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    [Command]
     void Move(float h, float v)
     {
         movement.Set(h, 0f, v);
@@ -87,9 +84,15 @@ public class PlayerMovement : MonoBehaviour
 
         // Move the player to it's current position plus the movement.
         playerRigidbody.MovePosition(playerRigidbody.transform.position + movement);
+        MoveOnClient(playerRigidbody.transform.position + movement);
     }
 
-    [Command]
+    [ClientRpc]
+    void MoveOnClient(Vector3 movement)
+    {
+        playerRigidbody.MovePosition(movement);
+    }
+
     void Turning()
     {
         // Create a ray from the mouse cursor on screen in the direction of the camera.
@@ -123,7 +126,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    [Command]
     void Animating(float h, float v)
     {
         // Create a boolean that is true if either of the input axes is non-zero.
