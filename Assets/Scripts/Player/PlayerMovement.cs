@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        isLocalPlayer = gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
+        isLocalPlayer = gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
         distToGround = collider.bounds.extents.y;
     }
     void Awake()
@@ -32,9 +32,9 @@ public class PlayerMovement : MonoBehaviour
         floorMask = LayerMask.GetMask("Floor");
 
         // Set up references.
-        anim = GetComponent<Animator>();
-        playerRigidbody = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
+        anim = GetComponentInChildren<Animator>();
+        playerRigidbody = GetComponentInChildren<Rigidbody>();
+        collider = GetComponentInChildren<Collider>();
     }
 
 
@@ -72,29 +72,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
-            isGrounded = false;
+            isGrounded = true;
         }
     }
 
     [Command]
     void Move(float h, float v)
     {
-        // Set the movement vector based on the axis input.
-        if (!isGrounded)
-        {
-            movement.Set(hJumping, 0f, vJumping);
-        }
-        else
-        {
-            movement.Set(h, 0f, v);
-            hJumping = h;
-            vJumping = v;
-        }
+        movement.Set(h, 0f, v);
+        hJumping = h;
+        vJumping = v;
         // Normalise the movement vector and make it proportional to the speed per second.
         movement = movement.normalized * speed * Time.deltaTime;
 
         // Move the player to it's current position plus the movement.
-        playerRigidbody.MovePosition(transform.position + movement);
+        playerRigidbody.MovePosition(playerRigidbody.transform.position + movement);
     }
 
     [Command]
@@ -118,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
         {
             // Create a vector from the player to the point on the floor the raycast from the mouse hit.
-            Vector3 playerToMouse = floorHit.point - transform.position;
+            Vector3 playerToMouse = floorHit.point - playerRigidbody.transform.position;
 
             // Ensure the vector is entirely along the floor plane.
             playerToMouse.y = 0f;
