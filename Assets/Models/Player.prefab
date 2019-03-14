@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagePerShot: 20
-  timeBetweenBullets: 0.15
+  timeBetweenBullets: 0.3
   range: 100
 --- !u!1 &7350623340108817365
 GameObject:
@@ -1025,6 +1025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7c1c55afbb1d924aaf9cc576ea67446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncInterval: 0.1
   speed: 6
 --- !u!54 &7350623341132760040
 Rigidbody:
@@ -1374,7 +1375,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7c1c55afbb1d924aaf9cc576ea67446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
+  syncInterval: 0.1
+  speed: 15
 --- !u!1 &7350623341434877306
 GameObject:
   m_ObjectHideFlags: 0
