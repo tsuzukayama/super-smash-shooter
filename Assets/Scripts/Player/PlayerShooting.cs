@@ -101,6 +101,7 @@ public class PlayerShooting : MonoBehaviour
             if (enemy != null)
             {
                 Debug.Log("hit!!!!");
+
                 pushEnemy(enemy.transform.parent.GetComponent<Rigidbody>());
                 // ... the enemy should take damage.
                 // enemy.TakeDamage(damagePerShot, shootHit.point);
@@ -120,6 +121,6 @@ public class PlayerShooting : MonoBehaviour
     [Command]
     void pushEnemy(Rigidbody enemy)
     {
-        enemy.AddForceAtPosition(1000 * shootRay.direction, shootHit.point);
+        enemy.AddForceAtPosition(300 * shootRay.direction, shootHit.point);
     }
 }

@@ -6,6 +6,7 @@ public class PlayerMovement : NetworkBehaviour
     public float speed = 6f;            // The speed that the player will move at.
 
 
+
     Vector3 movement;                   // The vector to store the direction of the player's movement.
     Animator anim;                      // Reference to the animator component.
 
