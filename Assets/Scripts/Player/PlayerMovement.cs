@@ -24,6 +24,7 @@ public class PlayerMovement : NetworkBehaviour
     void Start()
     {
         distToGround = collider.bounds.extents.y;
+        
     }
 
     void Awake()
