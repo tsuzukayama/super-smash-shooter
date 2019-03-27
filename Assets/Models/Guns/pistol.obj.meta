@@ -1,68 +1,23 @@
 fileFormatVersion: 2
-guid: b3beb2abb565f4b49b891ceb9e897359
+guid: a8da12887057237489d7453fe7f5b826
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: ArmL1
-    100002: ArmL2
-    100004: ArmL3
-    100006: ArmLeft1
-    100008: ArmR1
-    100010: ArmR2
-    100012: ArmR3
-    100014: ArmRight1
-    100016: //RootNode
-    100018: Body1
-    100020: Head1
-    100022: LegL1
-    100024: LegL2
-    100026: LegL3
-    100028: LegLeft1
-    100030: LegR1
-    100032: LegR2
-    100034: LegR3
-    100036: LegRight1
-    100038: Neck1
-    100040: Rig1
-    100042: Spine1
-    100044: Spine2
-    400000: ArmL1
-    400002: ArmL2
-    400004: ArmL3
-    400006: ArmLeft1
-    400008: ArmR1
-    400010: ArmR2
-    400012: ArmR3
-    400014: ArmRight1
-    400016: //RootNode
-    400018: Body1
-    400020: Head1
-    400022: LegL1
-    400024: LegL2
-    400026: LegL3
-    400028: LegLeft1
-    400030: LegR1
-    400032: LegR2
-    400034: LegR3
-    400036: LegRight1
-    400038: Neck1
-    400040: Rig1
-    400042: Spine1
-    400044: Spine2
-    2100000: lambert1
-    4300000: Body1
-    4300002: Head1
-    4300004: ArmLeft1
-    4300006: ArmRight1
-    4300008: LegLeft1
-    4300010: LegRight1
-    9500000: //RootNode
-    13700000: ArmLeft1
-    13700002: ArmRight1
-    13700004: Body1
-    13700006: Head1
-    13700008: LegLeft1
-    13700010: LegRight1
+    100000: Mesh1_Group2_Group1_Model
+    100002: Mesh2_Group3_Group1_Model
+    100004: //RootNode
+    400000: Mesh1_Group2_Group1_Model
+    400002: Mesh2_Group3_Group1_Model
+    400004: //RootNode
+    2100000: Gray4
+    2100002: Gray6
+    2100004: Gray8
+    2300000: Mesh1_Group2_Group1_Model
+    2300002: Mesh2_Group3_Group1_Model
+    3300000: Mesh1_Group2_Group1_Model
+    3300002: Mesh2_Group3_Group1_Model
+    4300000: Mesh1_Group2_Group1_Model
+    4300002: Mesh2_Group3_Group1_Model
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -82,7 +37,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    importConstraints: 1
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -115,8 +70,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -143,7 +98,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

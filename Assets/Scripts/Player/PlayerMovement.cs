@@ -23,7 +23,9 @@ public class PlayerMovement : NetworkBehaviour
     private bool isGrounded;
 
     void Start()
-    {        distToGround = collider.bounds.extents.y;
+    {
+        distToGround = collider.bounds.extents.y;
+        
     }
     void Awake()
     {
@@ -44,6 +46,7 @@ public class PlayerMovement : NetworkBehaviour
             // exit from update if this is not the local player
             return;
         }
+
         // Store the input axes.
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");

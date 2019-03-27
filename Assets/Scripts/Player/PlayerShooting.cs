@@ -91,7 +91,7 @@ public class PlayerShooting : MonoBehaviour
         shootRay.direction = transform.forward;
 
         // Perform the raycast against gameobjects on the shootable layer and if it hits something...
-        if (Physics.SphereCast(shootRay.origin, 1f, shootRay.direction, out shootHit, range, shootableMask))
+        if (Physics.SphereCast(shootRay.origin, 3f, shootRay.direction, out shootHit, range, shootableMask))
         {
 
             // Try and find an EnemyHealth script on the gameobject hit.

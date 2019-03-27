@@ -32,7 +32,7 @@ public class PlayerJump : MonoBehaviour
     }
 
     bool IsGrounded() {
-        return Physics.CheckCapsule(collider.bounds.center, new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.1f, collider.bounds.center.z), 0.18f);
+        return Physics.CheckCapsule(collider.bounds.center, new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.5f, collider.bounds.center.z), 0.5f);
     }
 
 // Update is called once per frame
