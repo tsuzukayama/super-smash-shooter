@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Mirror;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -18,8 +17,6 @@ public class CameraFollow : MonoBehaviour
         target = gameObject.transform.parent.gameObject.transform.Find("Body").gameObject.transform;
         // Calculate the initial offset.
         offset = transform.position - target.position;
-
-        isLocalPlayer = gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
     }
 
     void FixedUpdate()

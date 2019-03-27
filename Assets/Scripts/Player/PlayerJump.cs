@@ -1,5 +1,4 @@
-﻿using Mirror;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,8 +22,6 @@ public class PlayerJump : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isLocalPlayer = gameObject.transform.parent.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer;
-
         playerRigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
 

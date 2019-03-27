@@ -1,5 +1,4 @@
-﻿using Mirror;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -30,7 +29,6 @@ public class PlayerShooting : MonoBehaviour
 
     private void Start()
     {
-        isLocalPlayer = transform.root.GetComponent<NetworkIdentity>().isLocalPlayer;
         Debug.Log(transform.root.name);
     }
 
@@ -118,7 +116,6 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    [Command]
     void pushEnemy(Rigidbody enemy)
     {
         enemy.AddForceAtPosition(300 * shootRay.direction, shootHit.point);

@@ -1,10 +1,8 @@
-﻿using Mirror;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerMovement : NetworkBehaviour
+public class PlayerMovement
 {
     public float speed = 6f;            // The speed that the player will move at.
-
 
 
     Vector3 movement;                   // The vector to store the direction of the player's movement.
@@ -14,7 +12,7 @@ public class PlayerMovement : NetworkBehaviour
     int floorMask;                      // A layer mask so that a ray can be cast just at gameobjects on the floor layer.
     float camRayLength = 100f;          // The length of the ray from the camera into the scene.
 
-    private new Collider collider;
+    private Collider collider;
 
     private float distToGround;
 
@@ -31,22 +29,11 @@ public class PlayerMovement : NetworkBehaviour
     {
         // Create a layer mask for the floor layer.
         floorMask = LayerMask.GetMask("Floor");
-
-        // Set up references.
-        anim = GetComponentInChildren<Animator>();
-        playerRigidbody = GetComponentInChildren<Rigidbody>();
-        collider = GetComponentInChildren<Collider>();
     }
 
 
     void FixedUpdate()
     {
-        if (!isLocalPlayer || !isClient)
-        {
-            // exit from update if this is not the local player
-            return;
-        }
-
         // Store the input axes.
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
@@ -91,7 +78,6 @@ public class PlayerMovement : NetworkBehaviour
         MoveOnClient(playerRigidbody.transform.position + movement);
     }
 
-    [ClientRpc]
     void MoveOnClient(Vector3 movement)
     {
         playerRigidbody.MovePosition(movement);
