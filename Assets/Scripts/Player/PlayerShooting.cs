@@ -32,12 +32,12 @@ public class PlayerShooting : MonoBehaviour
 
     void Update()
     {
-        // Debug.Log("Is local player: " + isLocalPlayer);
-        if (!isLocalPlayer)
-        {
-            // exit from update if this is not the local player
-            return;
-        }
+        //Debug.Log("Is local player: " + isLocalPlayer);
+        //if (!isLocalPlayer)
+        //{
+        //    exit from update if this is not the local player
+        //    return;
+        //}
         // Add the time since Update was last called to the timer.
         timer += Time.deltaTime;
 
