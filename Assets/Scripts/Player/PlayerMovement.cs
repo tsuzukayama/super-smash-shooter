@@ -86,7 +86,7 @@ public class PlayerMovement : NetworkBehaviour
 
         // Move the player to it's current position plus the movement.
         playerRigidbody.MovePosition(playerRigidbody.transform.position + movement);
-        CmdMoveOnClient(playerRigidbody.transform.position + movement);
+        // CmdMoveOnClient(playerRigidbody.transform.position + movement);
     }
 
     void CmdMoveOnClient(Vector3 movement)
@@ -134,5 +134,17 @@ public class PlayerMovement : NetworkBehaviour
 
         // Tell the animator whether or not the player is walking.
         // anim.SetBool("IsWalking", walking);
+    }
+
+    public void CmdPush(Vector3 direction, Vector3 point)
+    {
+        playerRigidbody.AddForceAtPosition(direction, point);
+        RpcPush(direction, point);
+    }
+
+    [ClientRpc]
+    public void RpcPush(Vector3 direction, Vector3 point)
+    {        
+        playerRigidbody.AddForceAtPosition(direction, point);
     }
 }

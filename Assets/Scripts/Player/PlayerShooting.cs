@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerShooting : MonoBehaviour
+public class PlayerShooting : NetworkBehaviour
 {
     public int damagePerShot = 20;                  // The damage inflicted by each bullet.
     public float timeBetweenBullets = 0.15f;        // The time between each shot.
@@ -11,9 +11,14 @@ public class PlayerShooting : MonoBehaviour
     Ray shootRay;                                   // A ray from the gun end forwards.
     RaycastHit shootHit;                            // A raycast hit to get information about what was hit.
     int shootableMask;                              // A layer mask so the raycast only hits things on the shootable layer.
+    
     LineRenderer gunLine;                           // Reference to the line renderer.
+    
     Light gunLight;                                 // Reference to the light component.
+
     float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
+
+    private bool isLocalPlayer;
 
     void Awake()
     {
@@ -28,16 +33,17 @@ public class PlayerShooting : MonoBehaviour
     private void Start()
     {
         Debug.Log(transform.root.name);
+        isLocalPlayer = transform.root.GetComponent<NetworkIdentity>().isLocalPlayer;
     }
 
     void Update()
     {
-        //Debug.Log("Is local player: " + isLocalPlayer);
-        //if (!isLocalPlayer)
-        //{
-        //    exit from update if this is not the local player
-        //    return;
-        //}
+        Debug.Log("Is local player: " + isLocalPlayer);
+        if (!isLocalPlayer)
+        {
+            // exit from update if this is not the local player
+            return;
+        }
         // Add the time since Update was last called to the timer.
         timer += Time.deltaTime;
 
@@ -45,7 +51,7 @@ public class PlayerShooting : MonoBehaviour
         if (Input.GetButton("Fire1") && timer >= timeBetweenBullets)
         {
             // ... shoot the gun.
-            Shoot();
+            CmdShoot();
         }
 
         // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
@@ -62,8 +68,8 @@ public class PlayerShooting : MonoBehaviour
         gunLine.enabled = false;
         gunLight.enabled = false;
     }
-
-    void Shoot()
+    
+    void CmdShoot()
     {
         // Reset the timer.
         timer = 0f;
@@ -91,14 +97,17 @@ public class PlayerShooting : MonoBehaviour
         {
 
             // Try and find an EnemyHealth script on the gameobject hit.
-            GameObject enemy = shootHit.collider.gameObject;
+            PlayerMovement playerDamage = shootHit.collider.transform.root.GetComponent<PlayerMovement>();
+            NetworkIdentity networkIdentity = shootHit.collider.transform.root.GetComponent<NetworkIdentity>();
 
+            NetworkConnection networkConnection = shootHit.collider.transform.root.GetComponent<NetworkIdentity>().connectionToClient;
             // If the EnemyHealth component exist...
-            if (enemy != null)
+            if (playerDamage != null)
             {
                 Debug.Log("hit!!!!");
 
-                pushEnemy(enemy.transform.parent.GetComponent<Rigidbody>());
+                playerDamage.CmdPush(1100 * shootRay.direction, shootHit.point);
+                // pushEnemy(playerDamage.transform.parent.GetComponentInChildren<Rigidbody>());
                 // ... the enemy should take damage.
                 // enemy.TakeDamage(damagePerShot, shootHit.point);
             }
@@ -114,8 +123,9 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    void pushEnemy(Rigidbody enemy)
+    [Command]
+    void CmdPush()
     {
-        enemy.AddForceAtPosition(300 * shootRay.direction, shootHit.point);
+
     }
 }
