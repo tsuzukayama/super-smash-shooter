@@ -15,8 +15,6 @@ public class PlayerJump : MonoBehaviour
 
     private float distToGround;
 
-    private bool isLocalPlayer;
-
     private bool isGrounded;
 
     // Start is called before the first frame update
@@ -32,21 +30,12 @@ public class PlayerJump : MonoBehaviour
         return Physics.CheckCapsule(collider.bounds.center, new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.5f, collider.bounds.center.z), 0.5f);
     }
 
-// Update is called once per frame
     void FixedUpdate()
     {
-        if (!isLocalPlayer)
-        {
-            // exit from update if this is not the local player
-            return;
-        }
-
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
-            Debug.Log("jumpando");            
             playerRigidbody.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
         }
-
     }
 
     void OnCollisionEnter(Collision theCollision)
@@ -57,7 +46,6 @@ public class PlayerJump : MonoBehaviour
         }
     }
 
-    //consider when character is jumping .. it will exit collision.
     void OnCollisionExit(Collision theCollision)
     {
         if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))

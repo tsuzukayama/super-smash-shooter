@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class PlayerShooting : MonoBehaviour
     Light gunLight;                                 // Reference to the light component.
     float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
 
-    bool isLocalPlayer;
     void Awake()
     {
         // Create a layer mask for the Shootable layer.
@@ -23,8 +23,6 @@ public class PlayerShooting : MonoBehaviour
         // Set up the references.
         gunLine = GetComponent<LineRenderer>();
         gunLight = GetComponent<Light>();
-
-        
     }
 
     private void Start()
