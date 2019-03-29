@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerShooting : NetworkBehaviour
+public class PlayerShooting : MonoBehaviour
 {
     public int damagePerShot = 20;                  // The damage inflicted by each bullet.
     public float timeBetweenBullets = 0.15f;        // The time between each shot.
@@ -122,8 +122,7 @@ public class PlayerShooting : NetworkBehaviour
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
         }
     }
-
-    [Command]
+    
     void CmdPush()
     {
 

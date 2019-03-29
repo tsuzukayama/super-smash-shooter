@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class PlayerJump : MonoBehaviour
 {
@@ -15,42 +16,37 @@ public class PlayerJump : MonoBehaviour
 
     private float distToGround;
 
-    private bool isGrounded;
+    // private bool isGrounded;
+
+    private bool isLocalPlayer;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
+        collider = GetComponent<CapsuleCollider>();
 
         distToGround = collider.bounds.extents.y;
+        isLocalPlayer = transform.root.GetComponent<NetworkIdentity>().isLocalPlayer;
+
     }
 
-    bool IsGrounded() {
-        return Physics.CheckCapsule(collider.bounds.center, new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.5f, collider.bounds.center.z), 0.5f);
+    public bool IsGrounded() {
+        return Physics.Raycast(transform.position, - Vector3.up, distToGround + 0.1f);
+        // return Physics.CheckCapsule(collider.bounds.center, new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.1f, collider.bounds.center.z), 0.18f);
     }
 
     void FixedUpdate()
     {
-        if (Input.GetKeyDown(jumpKey) && isGrounded)
+        if (!isLocalPlayer)
+        {
+            // exit from update if this is not the local player
+            return;
+        }
+
+        if (Input.GetKeyDown(jumpKey) && IsGrounded())
         {
             playerRigidbody.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
-        }
-    }
-
-    void OnCollisionEnter(Collision theCollision)
-    {
-        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
-        {
-            isGrounded = true;
-        }
-    }
-
-    void OnCollisionExit(Collision theCollision)
-    {
-        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
-        {
-            isGrounded = false;
         }
     }
 }
