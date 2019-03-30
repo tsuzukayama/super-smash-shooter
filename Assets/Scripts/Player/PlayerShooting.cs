@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerShooting : MonoBehaviour
+public class PlayerShooting : NetworkBehaviour
 {
     public int damagePerShot = 20;                  // The damage inflicted by each bullet.
     public float timeBetweenBullets = 0.15f;        // The time between each shot.
@@ -18,7 +18,7 @@ public class PlayerShooting : MonoBehaviour
 
     float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
 
-    private bool isLocalPlayer;
+    public Transform gunTransform;
 
     void Awake()
     {
@@ -26,19 +26,17 @@ public class PlayerShooting : MonoBehaviour
         shootableMask = LayerMask.GetMask("Shootable");
 
         // Set up the references.
-        gunLine = GetComponent<LineRenderer>();
-        gunLight = GetComponent<Light>();
+        gunLine = GetComponentInChildren<LineRenderer>();
+        gunLight = GetComponentInChildren<Light>();
     }
 
     private void Start()
     {
         Debug.Log(transform.root.name);
-        isLocalPlayer = transform.root.GetComponent<NetworkIdentity>().isLocalPlayer;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        Debug.Log("Is local player: " + isLocalPlayer);
         if (!isLocalPlayer)
         {
             // exit from update if this is not the local player
@@ -50,7 +48,7 @@ public class PlayerShooting : MonoBehaviour
         // If the Fire1 button is being press and it's time to fire...
         if (Input.GetButton("Fire1") && timer >= timeBetweenBullets)
         {
-            // ... shoot the gun.
+            // ... shoot the gun.   
             CmdShoot();
         }
 
@@ -58,17 +56,49 @@ public class PlayerShooting : MonoBehaviour
         if (timer >= timeBetweenBullets * effectsDisplayTime)
         {
             // ... disable the effects.
-            DisableEffects();
+            CmdDisableEffects();
         }
     }
 
-    public void DisableEffects()
+    [Command]
+    public void CmdDisableEffects()
     {
         // Disable the line renderer and the light.
         gunLine.enabled = false;
         gunLight.enabled = false;
+       // RpcDisableEffects(false, false);
     }
-    
+
+    [ClientRpc]
+    public void RpcDisableEffects(bool gunLineEnabled, bool gunLightEnabled)
+    {
+        gunLine.enabled = gunLineEnabled;
+        gunLight.enabled = gunLightEnabled;
+    }
+
+    [ClientRpc]
+    void RpcStartShooting(Vector3 position, Vector3 forward)
+    {
+        // Play the gun shot audioclip.
+        // gunAudio.Play();
+
+        // Enable the light.
+        gunLight.enabled = true;
+
+        // Stop the particles from playing if they were, then start the particles.
+        // gunParticles.Stop();
+        // gunParticles.Play();
+
+        // Enable the line renderer and set it's first position to be the end of the gun.
+        gunLine.enabled = true;
+        gunLine.SetPosition(0, position);
+
+        // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
+        shootRay.origin = position;
+        shootRay.direction = forward;
+    }
+
+    [Command]
     void CmdShoot()
     {
         // Reset the timer.
@@ -86,12 +116,14 @@ public class PlayerShooting : MonoBehaviour
 
         // Enable the line renderer and set it's first position to be the end of the gun.
         gunLine.enabled = true;
-        gunLine.SetPosition(0, transform.position);
+        gunLine.SetPosition(0, gunTransform.position);
 
         // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
-        shootRay.origin = transform.position;
-        shootRay.direction = transform.forward;
+        shootRay.origin = gunTransform.position;
+        shootRay.direction = gunTransform.forward;
 
+        RpcStartShooting(gunTransform.position, gunTransform.forward);
+               
         // Perform the raycast against gameobjects on the shootable layer and if it hits something...
         if (Physics.SphereCast(shootRay.origin, 3f, shootRay.direction, out shootHit, range, shootableMask))
         {
@@ -106,7 +138,7 @@ public class PlayerShooting : MonoBehaviour
             {
                 Debug.Log("hit!!!!");
 
-                playerDamage.CmdPush(1100 * shootRay.direction, shootHit.point);
+                playerDamage.CmdPush(300 * shootRay.direction, shootHit.point);
                 // pushEnemy(playerDamage.transform.parent.GetComponentInChildren<Rigidbody>());
                 // ... the enemy should take damage.
                 // enemy.TakeDamage(damagePerShot, shootHit.point);

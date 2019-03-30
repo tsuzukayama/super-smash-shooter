@@ -136,15 +136,16 @@ public class PlayerMovement : NetworkBehaviour
         // anim.SetBool("IsWalking", walking);
     }
 
+    [Command]
     public void CmdPush(Vector3 direction, Vector3 point)
     {
         playerRigidbody.AddForceAtPosition(direction, point);
-        RpcPush(direction, point);
+       // RpcPush(direction, point);
     }
 
-    [ClientRpc]
-    public void RpcPush(Vector3 direction, Vector3 point)
-    {        
-        playerRigidbody.AddForceAtPosition(direction, point);
-    }
+    //[ClientRpc]
+    //public void RpcPush(Vector3 direction, Vector3 point)
+    //{        
+    //    playerRigidbody.AddForceAtPosition(direction, point);
+    //}
 }
