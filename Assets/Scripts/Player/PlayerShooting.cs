@@ -49,7 +49,7 @@ public class PlayerShooting : NetworkBehaviour
         if (Input.GetButton("Fire1") && timer >= timeBetweenBullets)
         {
             // ... shoot the gun.   
-            CmdShoot();
+            Shoot();
         }
 
         // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
@@ -60,13 +60,19 @@ public class PlayerShooting : NetworkBehaviour
         }
     }
 
+    void DisableEffects()
+    {
+        CmdDisableEffects();
+        RpcDisableEffects(false, false);
+    }
+
     [Command]
     public void CmdDisableEffects()
     {
         // Disable the line renderer and the light.
         gunLine.enabled = false;
         gunLight.enabled = false;
-       // RpcDisableEffects(false, false);
+        RpcDisableEffects(false, false);
     }
 
     [ClientRpc]
@@ -98,12 +104,41 @@ public class PlayerShooting : NetworkBehaviour
         shootRay.direction = forward;
     }
 
-    [Command]
-    void CmdShoot()
+    [ClientRpc]
+    void RpcEndShooting(Vector3 point)
+    {
+        gunLine.SetPosition(1, point);
+    }
+
+    void Shoot()
     {
         // Reset the timer.
         timer = 0f;
 
+        // Play the gun shot audioclip.
+        // gunAudio.Play();
+
+        // Enable the light.
+        gunLight.enabled = true;
+
+        // Stop the particles from playing if they were, then start the particles.
+        // gunParticles.Stop();
+        // gunParticles.Play();
+
+        // Enable the line renderer and set it's first position to be the end of the gun.
+        gunLine.enabled = true;
+        gunLine.SetPosition(0, gunTransform.position);
+
+        // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
+        shootRay.origin = gunTransform.position;
+        shootRay.direction = gunTransform.forward;
+
+        CmdShoot();
+    }
+
+    [Command]
+    void CmdShoot()
+    {        
         // Play the gun shot audioclip.
         // gunAudio.Play();
 
@@ -130,9 +165,7 @@ public class PlayerShooting : NetworkBehaviour
 
             // Try and find an EnemyHealth script on the gameobject hit.
             PlayerMovement playerDamage = shootHit.collider.transform.root.GetComponent<PlayerMovement>();
-            NetworkIdentity networkIdentity = shootHit.collider.transform.root.GetComponent<NetworkIdentity>();
 
-            NetworkConnection networkConnection = shootHit.collider.transform.root.GetComponent<NetworkIdentity>().connectionToClient;
             // If the EnemyHealth component exist...
             if (playerDamage != null)
             {
@@ -146,17 +179,14 @@ public class PlayerShooting : NetworkBehaviour
 
             // Set the second position of the line renderer to the point the raycast hit.
             gunLine.SetPosition(1, shootHit.point);
+            RpcEndShooting(shootHit.point);
         }
         // If the raycast didn't hit anything on the shootable layer...
         else
         {
             // ... set the second position of the line renderer to the fullest extent of the gun's range.
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+            RpcEndShooting(shootRay.origin + shootRay.direction * range);
         }
-    }
-    
-    void CmdPush()
-    {
-
     }
 }
