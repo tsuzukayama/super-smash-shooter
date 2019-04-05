@@ -1,26 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
-public class PlayerDeath : MonoBehaviour
+public class PlayerDeath : NetworkBehaviour
 {    
     Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
     Collider collider;
 
-    private bool isPlayerDead = false;
+    public bool isPlayerDead = false;
 
     private Vector3 initialPosition;
 
     void Start()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
+        playerRigidbody = GetComponentInChildren<Rigidbody>();
         initialPosition = playerRigidbody.transform.position;
-        collider = GetComponent<Collider>();
-
+        collider = GetComponentInChildren<Collider>();        
     }
-
-
+    
     void OnCollisionEnter(Collision collision)
     {
         Debug.Log(collision.gameObject.name);
@@ -28,18 +25,7 @@ public class PlayerDeath : MonoBehaviour
         {
             isPlayerDead = true;
             Debug.Log("is dead");
-            playerRigidbody.transform.position = initialPosition;
-        }
-    }
-
-    void OnTriggerEnter(Collider collider)
-    {
-        Debug.Log(collider.tag);
-        if (collider.gameObject.tag == "Kill")
-        {
-            isPlayerDead = true;
-            Debug.Log("is dead");
-            playerRigidbody.transform.position = initialPosition;
+            GameManager.singleton.SetEndText("You are dead");
         }
     }
 }
