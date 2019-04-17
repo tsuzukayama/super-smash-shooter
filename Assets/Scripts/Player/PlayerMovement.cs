@@ -68,6 +68,9 @@ public class PlayerMovement : NetworkBehaviour
         // Move the player to it's current position plus the movement.
         playerRigidbody.MovePosition(playerRigidbody.transform.position + movement);
         // CmdMoveOnClient(playerRigidbody.transform.position + movement);
+        if(h > 0 || v > 0)
+            anim.SetTrigger("isRunning");
+        else anim.SetTrigger("isIdle");
     }
 
     void CmdMoveOnClient(Vector3 movement)
