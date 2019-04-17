@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c7fd05511d19ea43bce258e0efc500e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endText: {fileID: 0}
+  isPlayerDead: 0
 --- !u!114 &5977055049436510794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b66aaa25237de34aa42f36f42b643fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSpeed: 20
+  jumpSpeed: 10
   jumpKey: 32
 --- !u!64 &7760468047812017658
 MeshCollider:
@@ -405,7 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c7fd05511d19ea43bce258e0efc500e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endText: {fileID: 8094832977869578874, guid: f45c7a866a3be8247a6678d17be5bbc8, type: 3}
+  isPlayerDead: 0
 --- !u!1001 &243839547240442112
 PrefabInstance:
   m_ObjectHideFlags: 0

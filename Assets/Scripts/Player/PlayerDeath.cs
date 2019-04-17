@@ -2,30 +2,48 @@
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class PlayerDeath : NetworkBehaviour
+public class PlayerDeath : MonoBehaviour
 {    
     Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
     Collider collider;
-
-    public bool isPlayerDead = false;
+    
+    private bool isLocal;
+    private bool isPlayerDead;
+    private GameManagement gameManagement;
 
     private Vector3 initialPosition;
 
-    void Start()
+    void Awake()
     {
         playerRigidbody = GetComponentInChildren<Rigidbody>();
         initialPosition = playerRigidbody.transform.position;
-        collider = GetComponentInChildren<Collider>();        
+        collider = GetComponentInChildren<Collider>();
+        gameManagement = GameObject.Find("/GameManager").GetComponent<GameManagement>();
+        // isPlayerDead = false;
+    }
+
+    void FixedUpdate()
+    {
+        if (isPlayerDead)
+        {
+            ShowDeadText();
+        }
     }
     
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.name);
+        Debug.Log(collision.gameObject.name);        
         if (collision.gameObject.name == "PlaneKill")
         {
-            isPlayerDead = true;
-            Debug.Log("is dead");
-            GameManager.singleton.SetEndText("You are dead");
+            // isPlayerDead = true;
+            ShowDeadText();
         }
+    }
+    
+    public void ShowDeadText()
+    {
+        //isPlayerDead = true;
+        Debug.Log("is dead");
+        gameManagement.endText.text = "You are dead";
     }
 }

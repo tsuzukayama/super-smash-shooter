@@ -19,8 +19,6 @@ public class PlayerMovement : NetworkBehaviour
     private float hJumping = 0;
     private float vJumping = 0;
 
-    private bool isGrounded;
-
     void Start()
     {
         distToGround = collider.bounds.extents.y;
@@ -57,23 +55,6 @@ public class PlayerMovement : NetworkBehaviour
 
         // Animate the player.
         CmdAnimating(h, v);
-    }
-
-    void OnCollisionEnter(Collision theCollision)
-    {
-        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
-        {
-            isGrounded = true;
-        }
-    }
-
-    //consider when character is jumping .. it will exit collision.
-    void OnCollisionExit(Collision theCollision)
-    {
-        if (theCollision.gameObject.layer == LayerMask.NameToLayer("Floor"))
-        {
-            isGrounded = true;
-        }
     }
 
     void CmdMove(float h, float v)
