@@ -45,16 +45,17 @@ public class PlayerMovement : NetworkBehaviour
 
         // Store the input axes.
         float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
+        float v = Input.GetAxisRaw("Vertical");        
 
         // Move the player around the scene.
         CmdMove(h, v);
 
         // Turn the player to face the mouse cursor.
-        CmdTurning();
+        Vector3 playerToMouse =  CmdTurning();
 
+        Debug.Log(Time.deltaTime + ": " + playerToMouse);
         // Animate the player.
-        CmdAnimating(h, v);
+        CmdAnimating(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), playerToMouse);
     }
 
     void CmdMove(float h, float v)
@@ -67,10 +68,7 @@ public class PlayerMovement : NetworkBehaviour
 
         // Move the player to it's current position plus the movement.
         playerRigidbody.MovePosition(playerRigidbody.transform.position + movement);
-        // CmdMoveOnClient(playerRigidbody.transform.position + movement);
-        if(h > 0 || v > 0)
-            anim.SetTrigger("isRunning");
-        else anim.SetTrigger("isIdle");
+        // CmdMoveOnClient(playerRigidbody.transform.position + movement);        
     }
 
     void CmdMoveOnClient(Vector3 movement)
@@ -78,27 +76,20 @@ public class PlayerMovement : NetworkBehaviour
         playerRigidbody.MovePosition(movement);
     }
 
-    void CmdTurning()
+    Vector3 CmdTurning()
     {
         // Create a ray from the mouse cursor on screen in the direction of the camera.
-        float mouseXPos = Input.GetAxis("Mouse X");
-        float mouseYPos = Input.GetAxis("Mouse Y");
-
-        // Debug.Log(string.Format("mouse X: {0}, mouse Y: {1}", mouseXPos, mouseYPos));
-        // Debug.Log(string.Format("mouse Position: {0}", Input.mousePosition));
-
-        Vector3 lookPosition = new Vector3(playerRigidbody.transform.eulerAngles.x, Mathf.Atan2(mouseXPos, mouseYPos) * Mathf.Rad2Deg, playerRigidbody.transform.eulerAngles.z);
-
-        // Debug.Log("lookPosition: " + lookPosition + ", mousePosition: " + Input.mousePosition);     
         Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         
         // Create a RaycastHit variable to store information about what was hit by the ray.
         RaycastHit floorHit;
+
+        Vector3 playerToMouse = new Vector3();
         // Perform the raycast and if it hits something on the floor layer...
         if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
         {
             // Create a vector from the player to the point on the floor the raycast from the mouse hit.
-            Vector3 playerToMouse = floorHit.point - playerRigidbody.transform.position;
+            playerToMouse = floorHit.point - playerRigidbody.transform.position;
 
             // Ensure the vector is entirely along the floor plane.
             playerToMouse.y = 0f;
@@ -108,16 +99,42 @@ public class PlayerMovement : NetworkBehaviour
 
             // Set the player's rotation to this new rotation.
             playerRigidbody.MoveRotation(newRotation);
+
         }
+
+        return playerToMouse;
     }
 
-    void CmdAnimating(float h, float v)
+    [Command]
+    void CmdAnimating(float horizontal, float vertical, Vector3 playerToMouse)
     {
+        Vector3 axisVector = new Vector3(horizontal, 0, vertical);
+
+        float fowardMagnitude = 0, rightMagnitude = 0;
+
+        if (axisVector.magnitude > 0)
+        {
+            Vector3 normalizedLookingAt = playerToMouse;
+            normalizedLookingAt.Normalize();
+            fowardMagnitude = Mathf.Clamp(Vector3.Dot(axisVector, normalizedLookingAt), -1, 1);
+
+
+            Vector3 perpendicularLookingAt = new Vector3(normalizedLookingAt.z, 0, -normalizedLookingAt.x);            
+            rightMagnitude = Mathf.Clamp(Vector3.Dot(axisVector, perpendicularLookingAt), -1, 1);
+        }
         // Create a boolean that is true if either of the input axes is non-zero.
-        bool walking = h != 0f || v != 0f;
 
         // Tell the animator whether or not the player is walking.
-        // anim.SetBool("IsWalking", walking);
+        anim.SetFloat("Right", rightMagnitude);
+        anim.SetFloat("Forward", fowardMagnitude);
+        RpcAnimating(rightMagnitude, fowardMagnitude);
+    }
+
+    [ClientRpc]
+    void RpcAnimating(float right, float forward)
+    {
+        anim.SetFloat("Right", right);
+        anim.SetFloat("Forward", forward);
     }
 
     [Command]

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0b41aff7d19325e47b5bd1cc51033887
+guid: 190120b782832b644965b4a397009635
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -20,6 +20,12 @@ ModelImporter:
     100028: Rig1
     100030: Spine1
     100032: Spine2
+    100034: ArmLeft1
+    100036: ArmRight1
+    100038: Body1
+    100040: Head1
+    100042: LegLeft1
+    100044: LegRight1
     400000: ArmL1
     400002: ArmL2
     400004: ArmL3
@@ -37,8 +43,27 @@ ModelImporter:
     400028: Rig1
     400030: Spine1
     400032: Spine2
-    7400000: Pistol Idle
+    400034: ArmLeft1
+    400036: ArmRight1
+    400038: Body1
+    400040: Head1
+    400042: LegLeft1
+    400044: LegRight1
+    2100000: lambert1
+    4300000: Body1
+    4300002: Head1
+    4300004: ArmLeft1
+    4300006: ArmRight1
+    4300008: LegLeft1
+    4300010: LegRight1
+    7400000: Pistol Strafe Right
     9500000: //RootNode
+    13700000: ArmLeft1
+    13700002: ArmRight1
+    13700004: Body1
+    13700006: Head1
+    13700008: LegLeft1
+    13700010: LegRight1
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -68,10 +93,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Pistol Idle
+      name: Pistol Strafe Right
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 249
+      lastFrame: 18
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

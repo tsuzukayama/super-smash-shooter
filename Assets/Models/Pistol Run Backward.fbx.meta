@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0b41aff7d19325e47b5bd1cc51033887
+guid: 172107be9a8d2d24c9fc08d3cc9ab5b6
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -37,7 +37,7 @@ ModelImporter:
     400028: Rig1
     400030: Spine1
     400032: Spine2
-    7400000: Pistol Idle
+    7400000: Pistol Run Backward
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -68,10 +68,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Pistol Idle
+      name: Pistol Run Backward
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 249
+      lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
