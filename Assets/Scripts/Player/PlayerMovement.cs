@@ -53,7 +53,6 @@ public class PlayerMovement : NetworkBehaviour
         // Turn the player to face the mouse cursor.
         Vector3 playerToMouse =  CmdTurning();
 
-        Debug.Log(Time.deltaTime + ": " + playerToMouse);
         // Animate the player.
         CmdAnimating(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), playerToMouse);
     }
