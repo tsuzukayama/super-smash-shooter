@@ -12,6 +12,8 @@ public class PlayerDeath : NetworkBehaviour
 
     private Vector3 initialPosition;
 
+    private NetworkInstanceId _netId;
+
 
     void Awake()
     {
@@ -19,12 +21,18 @@ public class PlayerDeath : NetworkBehaviour
         initialPosition = playerRigidbody.transform.position;
         collider = GetComponentInChildren<Collider>();
         gameManagement = GameObject.Find("/GameManager").GetComponent<GameManagement>();
-        // isPlayerDead = false;
+        // isPlayerDead = false;        
+        
+    }
+
+    void Start()
+    {
+        _netId = netId;
+        gameManagement.Players.Add(netId);
     }
 
     void FixedUpdate()
     {
-        // Debug.Log("IsPlayerDead: " + isPlayerDead);
         if (!isLocalPlayer)
         {
             return;
@@ -33,18 +41,17 @@ public class PlayerDeath : NetworkBehaviour
         {
             ShowDeadText();
         }
+        Debug.Log(gameManagement.HasPlayerWon(netId));
     }
 
 
     public void CollisionDetected(PlayerDeathChildren childScript)
     {
         isPlayerDead = true;
-        Debug.Log("child collided");
     }
 
     public void ShowDeadText()
     {
-        //isPlayerDead = true;
         gameManagement.endText.text = "You are dead";
     }
 }
