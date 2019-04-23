@@ -19,7 +19,7 @@ public class MenuControl : MonoBehaviour
         NetworkManager.singleton.StartClient();
     }
 
-    void Start()
+    public void Start()
     {
         hostNameInput.text = NetworkManager.singleton.networkAddress;
     }
