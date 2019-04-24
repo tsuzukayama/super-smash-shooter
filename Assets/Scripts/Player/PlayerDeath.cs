@@ -12,7 +12,8 @@ public class PlayerDeath : NetworkBehaviour
 
     private Vector3 initialPosition;
 
-    private NetworkInstanceId _netId;
+    private uint _netId;
+    private bool hasPlayerBeenAdded;
 
 
     void Awake()
@@ -21,29 +22,55 @@ public class PlayerDeath : NetworkBehaviour
         initialPosition = playerRigidbody.transform.position;
         collider = GetComponentInChildren<Collider>();
         gameManagement = GameObject.Find("/GameManager").GetComponent<GameManagement>();
-        // isPlayerDead = false;        
-        
-    }
-
-    void Start()
-    {
-        _netId = netId;
-        gameManagement.Players.Add(netId);
-    }
+        // isPlayerDead = false;           
+    }    
 
     void FixedUpdate()
-    {
+    {        
         if (!isLocalPlayer)
         {
             return;
         }
+        if (!hasPlayerBeenAdded)
+        {
+            gameManagement.Players.Add(netId.Value);
+            hasPlayerBeenAdded = true;
+        }
         if (isPlayerDead)
         {
             ShowDeadText();
+            gameManagement.Players.Remove(netId.Value);
         }
-        Debug.Log(gameManagement.HasPlayerWon(netId));
+        if (gameManagement.HasPlayerWon(netId.Value))
+        {
+            ShowWinText();
+        }        
     }
 
+
+    [Command]
+    void CmdAddPlayer(uint _netId)
+    {
+        RpcAddPlayer(_netId);
+    }
+
+    [ClientRpc]
+    void RpcAddPlayer(uint _netId)
+    {        
+        gameManagement.Players.Add(_netId);
+    }
+
+    [Command]
+    void CmdRemovePlayer(uint _netId)
+    {
+        RpcRemovePlayer(_netId);
+    }
+
+    [ClientRpc]
+    void RpcRemovePlayer(uint _netId)
+    {
+        gameManagement.Players.Remove(_netId);
+    }
 
     public void CollisionDetected(PlayerDeathChildren childScript)
     {
@@ -53,5 +80,10 @@ public class PlayerDeath : NetworkBehaviour
     public void ShowDeadText()
     {
         gameManagement.endText.text = "You are dead";
+    }
+
+    public void ShowWinText()
+    {
+        gameManagement.endText.text = "You Win";
     }
 }
