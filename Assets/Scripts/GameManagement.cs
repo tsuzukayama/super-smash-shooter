@@ -11,8 +11,7 @@ public class GameManagement : NetworkBehaviour
     private static GameManagement _instance;
     public static GameManagement Instance { get { return _instance; } }
 
-    [SyncVar]
-    public SyncListUInt Players = new SyncListUInt();
+    public List<uint> Players = new List<uint>();
 
     public bool hasGameStarted;
 

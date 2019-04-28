@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class PlayerDeath : NetworkBehaviour
     Collider collider;
     
     public bool isPlayerDead;
-    private GameManagement gameManagement;
+    // private GameManagement gameManagement;
 
     private Vector3 initialPosition;
 
@@ -21,7 +22,7 @@ public class PlayerDeath : NetworkBehaviour
         playerRigidbody = GetComponentInChildren<Rigidbody>();
         initialPosition = playerRigidbody.transform.position;
         collider = GetComponentInChildren<Collider>();
-        gameManagement = GameObject.Find("/GameManager").GetComponent<GameManagement>();
+        // gameManagement = GameObject.Find("/GameManager").GetComponent<GameManagement>();
         // isPlayerDead = false;           
     }    
 
@@ -31,22 +32,19 @@ public class PlayerDeath : NetworkBehaviour
         {
             return;
         }
-        if (!hasPlayerBeenAdded)
-        {
-            gameManagement.Players.Add(netId.Value);
-            hasPlayerBeenAdded = true;
-        }
+
+        CmdAddPlayer(netId.Value);
+
         if (isPlayerDead)
         {
             ShowDeadText();
-            gameManagement.Players.Remove(netId.Value);
+            CmdRemovePlayer(netId.Value);
         }
-        if (gameManagement.HasPlayerWon(netId.Value))
+        if (GameManagement.Instance.HasPlayerWon(netId.Value))
         {
             ShowWinText();
         }        
     }
-
 
     [Command]
     void CmdAddPlayer(uint _netId)
@@ -57,7 +55,8 @@ public class PlayerDeath : NetworkBehaviour
     [ClientRpc]
     void RpcAddPlayer(uint _netId)
     {        
-        gameManagement.Players.Add(_netId);
+        if(!GameManagement.Instance.Players.Contains(_netId))
+            GameManagement.Instance.Players.Add(_netId);
     }
 
     [Command]
@@ -69,7 +68,7 @@ public class PlayerDeath : NetworkBehaviour
     [ClientRpc]
     void RpcRemovePlayer(uint _netId)
     {
-        gameManagement.Players.Remove(_netId);
+        GameManagement.Instance.Players.Remove(_netId);
     }
 
     public void CollisionDetected(PlayerDeathChildren childScript)
@@ -79,11 +78,11 @@ public class PlayerDeath : NetworkBehaviour
 
     public void ShowDeadText()
     {
-        gameManagement.endText.text = "You are dead";
+        GameManagement.Instance.endText.text = "You are dead";
     }
 
     public void ShowWinText()
     {
-        gameManagement.endText.text = "You Win";
+        GameManagement.Instance.endText.text = "You Win";
     }
 }
