@@ -19,6 +19,9 @@ public class PlayerShooting : NetworkBehaviour
     float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
 
     public Transform gunTransform;
+    public AudioClip gunShot;
+
+    AudioSource source;
 
     void Awake()
     {
@@ -28,6 +31,7 @@ public class PlayerShooting : NetworkBehaviour
         // Set up the references.
         gunLine = GetComponentInChildren<LineRenderer>();
         gunLight = GetComponentInChildren<Light>();
+        source = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -102,6 +106,9 @@ public class PlayerShooting : NetworkBehaviour
         // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
         shootRay.origin = position;
         shootRay.direction = forward;
+
+        source.PlayOneShot(gunShot);
+
     }
 
     [ClientRpc]
@@ -156,6 +163,8 @@ public class PlayerShooting : NetworkBehaviour
         // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
         shootRay.origin = gunTransform.position;
         shootRay.direction = gunTransform.forward;
+
+        source.PlayOneShot(gunShot);
 
         RpcStartShooting(gunTransform.position, gunTransform.forward);
                
