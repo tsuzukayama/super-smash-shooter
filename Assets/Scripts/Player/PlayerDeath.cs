@@ -78,11 +78,11 @@ public class PlayerDeath : NetworkBehaviour
 
     public void ShowDeadText()
     {
-        GameManagement.Instance.endText.text = "You are dead";
+        GameManagement.Instance.SetEndText("You are dead");
     }
 
     public void ShowWinText()
     {
-        GameManagement.Instance.endText.text = "You Win";
+        GameManagement.Instance.SetEndText("You Win");
     }
 }

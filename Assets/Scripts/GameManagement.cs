@@ -10,6 +10,7 @@ public class GameManagement : NetworkBehaviour
 
     private static GameManagement _instance;
     public static GameManagement Instance { get { return _instance; } }
+    public GameObject ResultTextCanvas;
 
     public List<uint> Players = new List<uint>();
 
@@ -41,12 +42,13 @@ public class GameManagement : NetworkBehaviour
         foreach(var player in Players)
         {
             if (player == playerControllerId) isPlayerAlive = true;
-        }        
+        }
         return hasGameStarted && isPlayerAlive && Players.Count == 1;
     }
 
     public void SetEndText(string text)
     {
+        ResultTextCanvas.SetActive(true);
         endText.text = text;
     }
 }
