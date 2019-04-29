@@ -378,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
+  runSound: {fileID: 8300000, guid: 2a6837378db04d145add0bc77452de50, type: 3}
 --- !u!114 &2725327084066008245
 MonoBehaviour:
   m_ObjectHideFlags: 0

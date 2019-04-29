@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 public class PlayerMovement : NetworkBehaviour
 {
     public float speed = 6f;            // The speed that the player will move at.
+    public AudioClip runSound;
 
     Vector3 movement;                   // The vector to store the direction of the player's movement.
     Animator anim;                      // Reference to the animator component.
@@ -19,6 +20,8 @@ public class PlayerMovement : NetworkBehaviour
     private float hJumping = 0;
     private float vJumping = 0;
 
+    AudioSource source;
+
     void Start()
     {
         distToGround = collider.bounds.extents.y;
@@ -33,6 +36,8 @@ public class PlayerMovement : NetworkBehaviour
 
         // Create a layer mask for the floor layer.
         floorMask = LayerMask.GetMask("Floor");
+        source = GetComponent<AudioSource>();
+
     }
 
 
@@ -59,6 +64,12 @@ public class PlayerMovement : NetworkBehaviour
 
     void CmdMove(float h, float v)
     {
+        if(!source.isPlaying)
+            source.PlayOneShot(runSound);
+
+        if (h == 0 && v == 0)
+            source.Stop();
+
         movement.Set(h, 0f, v);
         hJumping = h;
         vJumping = v;

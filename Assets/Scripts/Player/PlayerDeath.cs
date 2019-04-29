@@ -13,10 +13,6 @@ public class PlayerDeath : NetworkBehaviour
 
     private Vector3 initialPosition;
 
-    private uint _netId;
-    private bool hasPlayerBeenAdded;
-
-
     void Awake()
     {
         playerRigidbody = GetComponentInChildren<Rigidbody>();
