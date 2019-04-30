@@ -380,6 +380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   runSound: {fileID: 8300000, guid: 2a6837378db04d145add0bc77452de50, type: 3}
+  playerAudios: {fileID: 0}
 --- !u!114 &2725327084066008245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,13 +436,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagePerShot: 20
-  timeBetweenBullets: 0.15
+  timeBetweenBullets: 0.35
   range: 100
   bullets: 6
   reloadKey: 114
   gunTransform: {fileID: 1353781420308608155}
-  gunShot: {fileID: 8300000, guid: c21813827e6b4d34487cefdb90299da3, type: 3}
-  gunReload: {fileID: 8300000, guid: 9a098bf2d53fccf44b77677582a8ec9e, type: 3}
   playerAudios: {fileID: 0}
 --- !u!114 &2334751754554622787
 MonoBehaviour:
@@ -732,22 +731,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7350623341411413709}
     m_Modifications:
-    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
-      propertyPath: m_Name
-      value: Body
-      objectReference: {fileID: 0}
-    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 400014, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
@@ -827,6 +810,22 @@ PrefabInstance:
     - target: {fileID: 100018, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
+      propertyPath: m_Name
+      value: Body
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100020, guid: b3beb2abb565f4b49b891ceb9e897359, type: 3}
       propertyPath: m_Layer
