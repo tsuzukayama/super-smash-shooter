@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class PlayerShooting : NetworkBehaviour
@@ -6,6 +7,9 @@ public class PlayerShooting : NetworkBehaviour
     public int damagePerShot = 20;                  // The damage inflicted by each bullet.
     public float timeBetweenBullets = 0.15f;        // The time between each shot.
     public float range = 100f;                      // The distance the gun can fire.
+    public int bullets = 6;
+    private TimeSpan realodedAt;
+    [SerializeField] private KeyCode reloadKey;
 
     float timer;                                    // A timer to determine when to fire.
     Ray shootRay;                                   // A ray from the gun end forwards.
@@ -20,11 +24,14 @@ public class PlayerShooting : NetworkBehaviour
 
     public Transform gunTransform;
     public AudioClip gunShot;
+    public AudioClip gunReload;
 
     AudioSource source;
 
     void Awake()
     {
+        realodedAt = TimeSpan.Zero;
+
         // Create a layer mask for the Shootable layer.
         shootableMask = LayerMask.GetMask("Shootable");
 
@@ -52,9 +59,12 @@ public class PlayerShooting : NetworkBehaviour
         // If the Fire1 button is being press and it's time to fire...
         if (Input.GetButton("Fire1") && timer >= timeBetweenBullets)
         {
-            // ... shoot the gun.   
+            // ... shoot the gun.
             Shoot();
         }
+
+        if (Input.GetKeyDown(reloadKey))
+            CmdReload();
 
         // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
         if (timer >= timeBetweenBullets * effectsDisplayTime)
@@ -108,7 +118,6 @@ public class PlayerShooting : NetworkBehaviour
         shootRay.direction = forward;
 
         source.PlayOneShot(gunShot);
-
     }
 
     [ClientRpc]
@@ -119,6 +128,14 @@ public class PlayerShooting : NetworkBehaviour
 
     void Shoot()
     {
+        if ((DateTime.Now.TimeOfDay - realodedAt).TotalSeconds < 1.75)
+            return;
+
+        if (bullets >= 0)
+            bullets--;
+        else
+            CmdReload();
+
         // Reset the timer.
         timer = 0f;
 
@@ -141,6 +158,14 @@ public class PlayerShooting : NetworkBehaviour
         shootRay.direction = gunTransform.forward;
 
         CmdShoot();
+    }
+
+    [Command]
+    void CmdReload()
+    {
+        realodedAt = DateTime.Now.TimeOfDay;
+        bullets = 6;
+        source.PlayOneShot(gunReload);
     }
 
     [Command]

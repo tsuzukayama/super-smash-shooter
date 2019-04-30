@@ -436,8 +436,11 @@ MonoBehaviour:
   damagePerShot: 20
   timeBetweenBullets: 0.15
   range: 100
+  bullets: 6
+  reloadKey: 114
   gunTransform: {fileID: 1353781420308608155}
   gunShot: {fileID: 8300000, guid: c21813827e6b4d34487cefdb90299da3, type: 3}
+  gunReload: {fileID: 8300000, guid: 9a098bf2d53fccf44b77677582a8ec9e, type: 3}
 --- !u!114 &2334751754554622787
 MonoBehaviour:
   m_ObjectHideFlags: 0
