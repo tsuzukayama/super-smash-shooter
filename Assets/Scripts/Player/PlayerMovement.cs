@@ -20,7 +20,7 @@ public class PlayerMovement : NetworkBehaviour
     private float hJumping = 0;
     private float vJumping = 0;
 
-    AudioSource source;
+    public PlayerAddAudios playerAudios;
 
     void Start()
     {
@@ -36,8 +36,7 @@ public class PlayerMovement : NetworkBehaviour
 
         // Create a layer mask for the floor layer.
         floorMask = LayerMask.GetMask("Floor");
-        source = GetComponent<AudioSource>();
-
+        playerAudios = GetComponent<PlayerAddAudios>();
     }
 
 
@@ -64,11 +63,11 @@ public class PlayerMovement : NetworkBehaviour
 
     void CmdMove(float h, float v)
     {
-        if(!source.isPlaying)
-            source.PlayOneShot(runSound);
+        if (!playerAudios.RunningSource.isPlaying)
+            playerAudios.RunningSource.Play();
 
         if (h == 0 && v == 0)
-            source.Stop();
+            playerAudios.RunningSource.Stop();
 
         movement.Set(h, 0f, v);
         hJumping = h;

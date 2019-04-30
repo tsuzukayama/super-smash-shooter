@@ -23,10 +23,9 @@ public class PlayerShooting : NetworkBehaviour
     float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
 
     public Transform gunTransform;
-    public AudioClip gunShot;
-    public AudioClip gunReload;
 
-    AudioSource source;
+    public PlayerAddAudios playerAudios;
+
 
     void Awake()
     {
@@ -38,7 +37,7 @@ public class PlayerShooting : NetworkBehaviour
         // Set up the references.
         gunLine = GetComponentInChildren<LineRenderer>();
         gunLight = GetComponentInChildren<Light>();
-        source = GetComponent<AudioSource>();
+        playerAudios = GetComponent<PlayerAddAudios>();
     }
 
     private void Start()
@@ -117,7 +116,7 @@ public class PlayerShooting : NetworkBehaviour
         shootRay.origin = position;
         shootRay.direction = forward;
 
-        source.PlayOneShot(gunShot);
+        playerAudios.GunShotSource.Play();
     }
 
     [ClientRpc]
@@ -165,7 +164,7 @@ public class PlayerShooting : NetworkBehaviour
     {
         realodedAt = DateTime.Now.TimeOfDay;
         bullets = 6;
-        source.PlayOneShot(gunReload);
+        playerAudios.GunReloadSource.Play();
     }
 
     [Command]
@@ -189,7 +188,7 @@ public class PlayerShooting : NetworkBehaviour
         shootRay.origin = gunTransform.position;
         shootRay.direction = gunTransform.forward;
 
-        source.PlayOneShot(gunShot);
+        // source.PlayOneShot(gunShot);
 
         RpcStartShooting(gunTransform.position, gunTransform.forward);
                
